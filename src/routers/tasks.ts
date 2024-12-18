@@ -1,10 +1,12 @@
 import { Router } from "express";
 import { ITaskCreateDTO , ITaskUpdateDTO } from "../types";
+import { getTasks } from "../services/tasks";
 
 const router = Router();
 
 router.get("/", (req, res) => {
-    res.send("Tasks");
+    const tasks = getTasks();
+    res.send(tasks);
 });
 
 router.post("/", (req, res) => {
