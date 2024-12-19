@@ -1,29 +1,30 @@
 import  prisma  from '../utils/prismaClient';
-import { ETaskColor, ITask, ITaskCreateDTO, ITaskUpdateDTO } from '../types';
+import { TaskColor, ITask, ITaskCreateDTO, ITaskUpdateDTO } from '../types';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import exp from 'constants';
 
 
 
 export async function getTasks() {
     try {
         const tasks =  await prisma.task.findMany();
-        return tasks as ITask[]
+        return tasks as unknown as ITask[]
     } catch (error) {
         console.error('Error fetching tasks:', error);
         throw new Error('Failed to fetch tasks');
     }
 }
 
-export async function createTask(request : ITaskCreateDTO) {
-    const {title, color} = request
+// In createTask function
+export async function createTask(request: ITaskCreateDTO) {
+    const { title, color   } = request;  
+    
     try {
         return await prisma.task.create({
             data: {
                 title,
-                color: color 
+                color: color as TaskColor | undefined
             }
-        }) as ITask
+        }) 
     } catch (error) {
         console.log(error);
         throw new Error('Failed to create task');
@@ -39,11 +40,11 @@ export async function updateTask(req : ITaskUpdateDTO, id : number) {
                 id: id
             },
             data: {
-                title,
-                color,
-                completed
+                ...(title !== undefined && { title }),
+                ...(color !== undefined && { color }),
+                ...(completed !== undefined && { completed })
             }
-        }) as ITask
+        }) 
     } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
             
@@ -64,7 +65,7 @@ export async function deleteTask(id : number) {
             where: {
                 id: id
             }
-        }) as ITask
+        }) as unknown as ITask
     } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
             

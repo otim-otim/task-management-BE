@@ -14,13 +14,13 @@ datasource db {
 }
 
 enum TaskColor {
-  RED
-  BLUE
-  GREEN
-  YELLOW
-  PURPLE
-  ORANGE
-  GRAY
+  red
+  blue
+  green
+  yellow
+  purple
+  orange
+  gray
 }
 
 model Task {
@@ -28,6 +28,6 @@ model Task {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   title     String    @db.VarChar(255)
-  color     TaskColor @default(GRAY)
+  color     TaskColor @default(gray)
   completed Boolean   @default(false)
 }

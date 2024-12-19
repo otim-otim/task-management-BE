@@ -1,24 +1,24 @@
 import { Router } from "express";
-import { ITaskCreateDTO , ITaskUpdateDTO, ETaskColor } from "../types";
+import { ITaskCreateDTO, ITaskUpdateDTO, TaskColor } from "../types";
 import { getTasks, createTask, updateTask, deleteTask } from "../services/tasks";
-import {celebrate, Joi} from 'celebrate'
+import { celebrate, Joi } from 'celebrate'
 
 const router = Router();
 
 router.get("/", async (req, res) => {
     try {
         const tasks = await getTasks();
-        res.send({tasks});
-        
+        res.send({ tasks });
+
     } catch (error) {
-        res.send({error});
+        res.send({ error });
     }
 });
 
 router.post("/", celebrate({
     body: Joi.object({
         title: Joi.string().required(),
-        color: Joi.string().valid(...Object.values(ETaskColor)).required()
+        color: Joi.string().valid('red', 'blue', 'green', 'yellow', 'purple', 'orange', 'gray').required()
     })
 }),
     async (req, res) => {
@@ -29,18 +29,18 @@ router.post("/", celebrate({
                 task,
                 message: "Task created successfully"
             });
-            
+
         } catch (error) {
-            res.send({error});
+            res.send({ error });
         }
-});
+    });
 
 
-router.put("/:id",celebrate({
+router.put("/:id", celebrate({
     body: Joi.object({
         title: Joi.string().required(),
-        color: Joi.string().valid(...Object.values(ETaskColor)).required(),
-        isCompleted: Joi.boolean().required()
+        color: Joi.string().valid('red', 'blue', 'green', 'yellow', 'purple', 'orange', 'gray').required(),
+        completed: Joi.boolean().required()
     })
 }), async (req, res) => {
     const taskReq = req.body as ITaskUpdateDTO
@@ -59,7 +59,7 @@ router.delete("/:id", async (req, res) => {
             message: "Task deleted successfully"
         });
     } catch (error) {
-        res.send({error});
+        res.send({ error });
     }
 });
 export default router;
