@@ -1,5 +1,6 @@
 import  prisma  from '../utils/prismaClient';
-import { ETaskColor, ITaskCreateDTO } from '../types';
+import { ETaskColor, ITaskCreateDTO, ITaskUpdateDTO } from '../types';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 
 
@@ -23,5 +24,33 @@ export async function createTask(request : ITaskCreateDTO) {
         });
     } catch (error) {
         console.log(error);
+    }
+}
+
+export async function updateTask(req : ITaskUpdateDTO, id : number) {
+    const {title, color, isCompleted} = req
+    
+    try {
+        return await prisma.task.update({
+            where: {
+                id: id
+            },
+            data: {
+                title: title,
+                color: color,
+                isCompleted: isCompleted
+            }
+        });
+    } catch (error) {
+        if (error instanceof PrismaClientKnownRequestError) {
+            // The .code property can be accessed in a type-safe manner
+            if (error.code === 'P2025') {
+                // if the record is not found
+                throw new Error(`Task with id ${id} not found`);
+            }
+        }
+        // Re-throw other errors
+        console.error('Error updating task:', error);
+        throw error;
     }
 }
