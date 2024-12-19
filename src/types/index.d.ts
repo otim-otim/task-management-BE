@@ -17,11 +17,12 @@ export interface ITaskUpdateDTO {
     isCompleted?: boolean;
 }
 
-export const enum ETaskColor {
-    Red = "red",
-    Green = "green",
-    Blue = "blue",
-    Yellow = "yellow",
-    Purple = "purple",
-    Orange = "orange"
+export enum ETaskColor {
+    RED = 'RED',
+    BLUE = 'BLUE',
+    GREEN = 'GREEN',
+    YELLOW = 'YELLOW',
+    PURPLE = 'PURPLE',
+    ORANGE = 'ORANGE',
+    GRAY = 'GRAY'
 }
