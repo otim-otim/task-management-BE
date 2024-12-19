@@ -13,13 +13,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TaskColor {
+  RED
+  BLUE
+  GREEN
+  YELLOW
+  PURPLE
+  ORANGE
+  GRAY
+}
 
 model Task {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  color   String?
-  isCompleted Boolean  @default(false)
-  
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  title     String    @db.VarChar(255)
+  color     TaskColor @default(GRAY)
+  completed Boolean   @default(false)
 }
