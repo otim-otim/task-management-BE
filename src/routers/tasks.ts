@@ -38,9 +38,9 @@ router.post("/", celebrate({
 
 router.put("/:id", celebrate({
     body: Joi.object({
-        title: Joi.string().required(),
-        color: Joi.string().valid('red', 'blue', 'green', 'yellow', 'purple', 'orange', 'gray').required(),
-        completed: Joi.boolean().required()
+        title: Joi.string(),
+        color: Joi.string().valid('red', 'blue', 'green', 'yellow', 'purple', 'orange', 'gray'),
+        completed: Joi.boolean()
     })
 }), async (req, res) => {
     const taskReq = req.body as ITaskUpdateDTO
