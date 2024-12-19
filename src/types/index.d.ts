@@ -2,7 +2,9 @@ export interface ITask {
     id: number;
     title: string;
     color: ETaskColor;
-    isCompleted: boolean;
+    completed: boolean;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 
@@ -14,7 +16,7 @@ export interface ITaskCreateDTO {
 export interface ITaskUpdateDTO {
     title?: string;
     color?: ETaskColor;
-    isCompleted?: boolean;
+    completed?: boolean;
 }
 
 export enum ETaskColor {

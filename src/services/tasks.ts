@@ -1,5 +1,5 @@
 import  prisma  from '../utils/prismaClient';
-import { ETaskColor, ITaskCreateDTO, ITaskUpdateDTO } from '../types';
+import { ETaskColor, ITask, ITaskCreateDTO, ITaskUpdateDTO } from '../types';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import exp from 'constants';
 
@@ -7,7 +7,8 @@ import exp from 'constants';
 
 export async function getTasks() {
     try {
-        return await prisma.task.findMany();
+        const tasks =  await prisma.task.findMany();
+        return tasks as ITask[]
     } catch (error) {
         console.error('Error fetching tasks:', error);
         throw new Error('Failed to fetch tasks');
@@ -19,17 +20,18 @@ export async function createTask(request : ITaskCreateDTO) {
     try {
         return await prisma.task.create({
             data: {
-                title: title,
-                color: color
+                title,
+                color: color 
             }
-        });
+        }) as ITask
     } catch (error) {
         console.log(error);
+        throw new Error('Failed to create task');
     }
 }
 
 export async function updateTask(req : ITaskUpdateDTO, id : number) {
-    const {title, color, isCompleted} = req
+    const {title, color, completed} = req
     
     try {
         return await prisma.task.update({
@@ -37,11 +39,11 @@ export async function updateTask(req : ITaskUpdateDTO, id : number) {
                 id: id
             },
             data: {
-                title: title,
-                color: color,
-                isCompleted: isCompleted
+                title,
+                color,
+                completed
             }
-        });
+        }) as ITask
     } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
             
@@ -62,7 +64,7 @@ export async function deleteTask(id : number) {
             where: {
                 id: id
             }
-        });
+        }) as ITask
     } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
             
