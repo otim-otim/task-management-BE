@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { ITaskCreateDTO, ITaskUpdateDTO, TaskColor } from "../types";
-import { getTasks, createTask, updateTask, deleteTask } from "../services/tasks";
+import { getTasks, createTask, updateTask, deleteTask, getTaskById } from "../services/tasks";
 import { celebrate, Joi } from 'celebrate'
 
 const router = Router();
@@ -58,6 +58,15 @@ router.delete("/:id", async (req, res) => {
             task,
             message: "Task deleted successfully"
         });
+    } catch (error) {
+        res.send({ error });
+    }
+});
+
+router.get("/:id", async (req, res) => {
+    try {
+        const task = await getTaskById(Number(req.params.id))
+        res.send({ task });
     } catch (error) {
         res.send({ error });
     }

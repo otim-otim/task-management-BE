@@ -79,3 +79,11 @@ export async function deleteTask(id : number) {
         throw error;
     }
 }
+
+export function getTaskById(id : number) {
+    return prisma.task.findUnique({
+        where: {
+            id: id
+        }
+    }) as unknown as ITask
+}
