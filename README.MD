@@ -20,8 +20,8 @@ A Node.js Express backend for a Task Management Application built with TypeScrip
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/task-todo-be.git
-cd task-todo-be
+git clone https://github.com/otim-otim/task-management-BE.git
+cd task-management-BE
 ```
 
 ### 2. Install Dependencies
